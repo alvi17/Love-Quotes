@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="msapplication-tap-highlight" content="no" />
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />-->
+		<meta content="width=device-width,initial-scale=1,maximum-scale=5,user-scalable=yes" name="viewport">
+        <link rel="stylesheet" type="text/css" href="css/index.css" />
+		
+	<link rel="stylesheet" href="css/jquery.mobile-1.2.0.min.css" />
+	<script src="js/jquery-1.8.2.min.js"></script>
+	<script src="js/fastclick.js"></script>
+	<script type="text/javascript" src="GAPlugin.js"></script>
+	<script src="js/jquery.mobile-1.2.0.min.js"></script>
+	<script type="text/javascript">
+			var gaPlugin;
+		
+			function initialize() {
+    			document.addEventListener("deviceready", onDeviceReady, true);
+			}
+		
+			function onDeviceReady() {
+				gaPlugin = window.plugins.gaPlugin;
+				
+				// Note: A request for permission is REQUIRED by google. You probably want to do this just once, though, and remember the answer for subsequent runs.
+				navigator.notification.confirm('GA_PLUGIN would like your permission to collect usage data. No personal or user identifiable data will be collected.', permissionCallback, 'Attention', 'Allow,Deny');
+			}
+		
+			function permissionCallback (button) {
+				if (button === 1)
+					gaPlugin.init(nativePluginResultHandler, nativePluginErrorHandler, "UA-60702934-1", 10);
+			}
+
+			function nativePluginResultHandler (result) {
+				//alert('nativePluginResultHandler - '+result);
+				console.log('nativePluginResultHandler: '+result);
+
+			}
+        
+			function nativePluginErrorHandler (error) {
+				//alert('nativePluginErrorHandler - '+error);
+				console.log('nativePluginErrorHandler: '+error);
+			}
+			
+			function TrackButtonClicked() {
+				gaPlugin.trackEvent( nativePluginResultHandler, nativePluginErrorHandler, "Button", "Click", "event only", 1);
+			}
+			
+			function VariableButtonClicked() {
+				// Set a dimension based on index and value. Make sure you have added a dimension in the GA dashboard to the
+				// default property for the passed in index, and your desired scope. GA allows up to 20 dimensions for a free account
+				gaPlugin.setVariable( nativePluginResultHandler, nativePluginErrorHandler, 1, "Purple");
+
+				// dimensions are are passed to the next event sent to GA. go ahead and fire off an event with the label (key) of your choice
+				// In this example, the label for custom dimension 1 will show up in the dashboard as "favoriteColor". This is much more efficent
+				// than the old custom variable method introduced in V1, (plus you get 20 free dimensions vs 5 free custom variables)
+				gaPlugin.trackEvent( nativePluginResultHandler, nativePluginErrorHandler, "event with variable", "set variable", "favoriteColor", 1);
+			}
+        
+			function PageButtonClicked() {
+				gaPlugin.trackPage( nativePluginResultHandler, nativePluginErrorHandler, "some.url.com");
+				
+			}
+			
+			function goingAway() {
+				gaPlugin.exit(nativePluginResultHandler, nativePluginErrorHandler);
+			}
+			
+	</script>
+
+        <title>Easy Drug Card</title>
+		
+		
+	 
+	  
+    </head>
+	
+
+    <body onload="initFastButtons();" onunload="goingAway();">
+	<span id="fastclick">
+	
+	
+<div data-role="page" id="easydrugcard">
+<div id="mainheader">
+	<div class="mainheader-title">
+
+		</div>
+		</div>
+	<div data-role="none" class="pagecontent">
+	
+	
+		
+	</div><!-- /content -->
+
+	<div data-role="footer" data-id="foo1" data-position="fixed" data-tap-toggle="false" data-fullscreen="true" data-theme="c" >
+		<div data-role="navbar">
+			<ul>
+				<li><a href="#drugprices" onclick="TrackButtonClicked();"><img src="img/icon-1.png"><br>Drug<br>Prices</a></li>
+				<li><a href="#pharmacylocator" onclick="PageButtonClicked();"><img src="img/icon-2.png"><br>Pharmacy<br>Locator</a></li>
+				<li><a href="#easydrugcard" class="ui-btn-active ui-state-persist" onclick="VariableButtonClicked();"><img src="img/icon-3.png"><br>Easy Drug<br>Card</a></li>
+				<li><a href="#howto"><img src="img/icon-4.png"><br>How-To<br>& FAQ</a></li>
+			</ul>
+		</div><!-- /navbar -->
+	</div><!-- /footer -->
+</div><!-- /page -->
+<div data-role="page" id="drugprices">1</div>
+<div data-role="page" id="pharmacylocator">2</div>
+
+<div data-role="page" id="howto">3</div>
+
+</html>
